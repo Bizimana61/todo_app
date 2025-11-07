@@ -3,6 +3,12 @@ class ApplicationController < ActionController::Base
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
   allow_browser versions: :modern
 
+  # Prevent CSRF attacks by raising an exception for unverified requests
+  protect_from_forgery with: :exception
+
+  # Set security headers
+  before_action :set_security_headers
+
   helper_method :current_user, :logged_in?
 
   private
@@ -20,5 +26,22 @@ class ApplicationController < ActionController::Base
     unless logged_in?
       redirect_to login_path, alert: "Please log in to continue."
     end
+  end
+
+  def set_security_headers
+    # Prevent clickjacking attacks
+    response.headers['X-Frame-Options'] = 'DENY'
+    
+    # Prevent MIME type sniffing
+    response.headers['X-Content-Type-Options'] = 'nosniff'
+    
+    # Enable XSS protection (legacy browsers)
+    response.headers['X-XSS-Protection'] = '1; mode=block'
+    
+    # Enforce HTTPS in production
+    response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains' if Rails.env.production?
+    
+    # Prevent information disclosure
+    response.headers['X-Powered-By'] = 'TaskManager'
   end
 end

@@ -1,9 +1,16 @@
-<div id="<%= dom_id(todo) %>" class="todo-item <%= 'completed' if todo.done %>" role="listitem" aria-labelledby="todo-<%= todo.id %>-title">
+<div id="<%= dom_id(todo) %>" class="todo-item <%= 'completed' if todo.done %> <%= urgency_class(todo) unless todo.done %>" role="listitem" aria-labelledby="todo-<%= todo.id %>-title">
   <div>
     <div id="todo-<%= todo.id %>-title" class="title"><%= (todo.description.presence || 'Untitled') %></div>
 
     <% if todo.due_date.present? %>
-      <div class="muted">Due: <%= (defined?(formatted_due_date) ? formatted_due_date(todo.due_date) : (todo.due_date.respond_to?(:strftime) ? todo.due_date.strftime("%b %e, %Y %H:%M") : todo.due_date.to_s)) %></div>
+      <div class="muted">
+        Due: <%= (defined?(formatted_due_date) ? formatted_due_date(todo.due_date) : (todo.due_date.respond_to?(:strftime) ? todo.due_date.strftime("%b %e, %Y %H:%M") : todo.due_date.to_s)) %>
+        <% if !todo.done && urgency_message(todo) %>
+          <span class="urgency-badge <%= urgency_class(todo) %>" role="status" aria-live="polite">
+            ⚠️ <%= urgency_message(todo) %>
+          </span>
+        <% end %>
+      </div>
     <% end %>
 
     <div class="muted" style="margin-top:.5rem;">

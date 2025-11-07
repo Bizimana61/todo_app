@@ -478,3 +478,68 @@ main{padding:2rem 0}
   padding: 0.75rem 1.5rem;
   font-size: 1rem;
 }
+
+/* Urgency alerts for todos */
+.urgency-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  margin-left: 0.5rem;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.urgency-badge.overdue {
+  background: #fee;
+  color: #c00;
+  border: 1px solid #fcc;
+}
+
+.urgency-badge.due-today {
+  background: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeaa7;
+}
+
+.urgency-badge.due-tomorrow {
+  background: #e3f2fd;
+  color: #1565c0;
+  border: 1px solid #bbdefb;
+}
+
+.urgency-badge.due-soon {
+  background: #f3e5f5;
+  color: #6a1b9a;
+  border: 1px solid #e1bee7;
+}
+
+/* Highlight todo items by urgency */
+.todo-item.overdue {
+  border-left: 4px solid #c00;
+  background: #fff5f5;
+}
+
+.todo-item.due-today {
+  border-left: 4px solid #f59e0b;
+  background: #fffbeb;
+}
+
+.todo-item.due-tomorrow {
+  border-left: 4px solid #3b82f6;
+  background: #eff6ff;
+}
+
+.todo-item.due-soon {
+  border-left: 4px solid #8b5cf6;
+  background: #faf5ff;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
