@@ -1,13 +1,13 @@
 class Todo < ApplicationRecord
   belongs_to :user
 
-  validates :description, 
+  validates :description,
             presence: true,
             length: { minimum: 1, maximum: 1000 }
-  
+
   validates :due_date,
             allow_blank: true,
-            inclusion: { 
+            inclusion: {
               in: proc { |todo| (Date.today - 100.years)..(Date.today + 100.years) },
               message: "must be a reasonable date"
             },

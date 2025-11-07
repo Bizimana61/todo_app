@@ -5,7 +5,7 @@ Rails.application.configure do
   # Ensure cookies are secure in production
   if Rails.env.production?
     config.session_store :cookie_store,
-                         key: '_taskmanager_session',
+                         key: "_taskmanager_session",
                          secure: true,           # Only send cookie over HTTPS
                          httponly: true,         # Prevent JavaScript access to session cookie
                          same_site: :lax         # CSRF protection
@@ -13,7 +13,7 @@ Rails.application.configure do
 
   # Prevent host header injection
   config.hosts.clear # Clears default restrictions
-  
+
   # In production, you should restrict to your actual domain:
   # config.hosts << "your-app.herokuapp.com"
   # config.hosts << "www.yourdomain.com"

@@ -5,7 +5,7 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
     @user = users(:one)
     @todo = todos(:one)
     # Log in the user by setting session
-    post login_url, params: { email: @user.email, password: 'Password123!' }
+    post login_url, params: { email: @user.email, password: "Password123!" }
   end
 
   test "should get index" do
