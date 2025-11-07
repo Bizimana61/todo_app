@@ -1,8 +1,25 @@
-<div id="<%= dom_id todo %>">
-  <p>
-    <strong>Description:</strong>
-    <%= todo.description %>
-  </p>
-  <p><strong>Done:</strong> <%= todo.done ? 'Yes' : 'No' %></p>
+<div id="<%= dom_id(todo) %>" class="todo-item <%= 'completed' if todo.done %>" role="listitem" aria-labelledby="todo-<%= todo.id %>-title">
+  <div>
+    <div id="todo-<%= todo.id %>-title" class="title"><%= (todo.description.presence || 'Untitled') %></div>
 
+    <% if todo.due_date.present? %>
+      <div class="muted">Due: <%= (defined?(formatted_due_date) ? formatted_due_date(todo.due_date) : (todo.due_date.respond_to?(:strftime) ? todo.due_date.strftime("%b %e, %Y %H:%M") : todo.due_date.to_s)) %></div>
+    <% end %>
+
+    <div class="muted" style="margin-top:.5rem;">
+      <%= form_with(model: todo, url: todo_path(todo), method: :patch, local: false) do |f| %>
+        <label class="done-inline" style="display:inline-flex;align-items:center;gap:.4rem;">
+          <%# Hidden field ensures unchecked -> sent as '0' when unchecked (Rails check_box adds one automatically) %>
+          <%= f.check_box :done, checked: todo.done, onchange: "this.form.submit()", aria: { label: (todo.done ? 'Mark as not done' : 'Mark as done') } %>
+          <strong>Done:</strong>
+          <span class="done-text" style="margin-left:.25rem;"><%= todo.done ? 'Yes' : 'No' %></span>
+        </label>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="todo-actions" style="margin-top:.5rem;">
+    <%= link_to 'Show', todo, aria: { label: "Show details for #{truncate(todo.description || 'todo', length: 40)}" } %>
+    <%= link_to 'Edit', edit_todo_path(todo), aria: { label: "Edit #{truncate(todo.description || 'todo', length: 40)}" } %>
+  </div>
 </div>

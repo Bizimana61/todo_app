@@ -1,0 +1,74 @@
+<% content_for :title, "Edit Profile" %>
+
+<div class="profile-container">
+  <h1>👤 My Profile</h1>
+
+  <div class="profile-card">
+    <div class="profile-header">
+      <div class="avatar-section">
+        <% if @user.avatar.present? %>
+          <img src="<%= @user.avatar %>" alt="<%= @user.name || @user.email %>" class="profile-avatar">
+        <% else %>
+          <div class="profile-avatar avatar-initials">
+            <%= @user.initials %>
+          </div>
+        <% end %>
+      </div>
+      <div class="profile-info">
+        <h2><%= @user.name.presence || @user.email %></h2>
+        <p class="muted"><%= @user.email %></p>
+      </div>
+    </div>
+
+    <%= form_with model: @user, url: profile_path, method: :patch do |f| %>
+      <% if @user.errors.any? %>
+        <div style="color: red">
+          <h2><%= pluralize(@user.errors.count, "error") %> prevented your profile from being updated:</h2>
+          <ul>
+            <% @user.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="form-group">
+        <%= f.label :name, "👤 Full Name" %>
+        <%= f.text_field :name, placeholder: "Your name", autocomplete: "name" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :email, "📧 Email" %>
+        <%= f.email_field :email, required: true, autocomplete: "email" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :avatar_url, "🖼️ Avatar URL (optional)" %>
+        <%= f.text_field :avatar_url, placeholder: "https://example.com/your-photo.jpg" %>
+        <small class="muted">Paste a URL to your profile picture (e.g., from Gravatar, Imgur, or any public image)</small>
+      </div>
+
+      <div class="form-divider">
+        <span>Change Password (leave blank to keep current)</span>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :password, "🔒 New Password (optional)" %>
+        <%= f.password_field :password, autocomplete: "new-password",
+              pattern: '(?=.{8,})(?=.*\d)(?=.*[A-Za-z])(?=.*[@#%$&*\^]).*',
+              title: 'At least 8 chars, include a letter, a digit and one special char: @ # % $ & * ^' %>
+        <small class="muted">Must be at least 8 characters with a letter, digit and special character (@#%$&*^)</small>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :password_confirmation, "🔒 Confirm New Password" %>
+        <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
+      </div>
+
+      <div class="form-actions">
+        <%= f.submit "💾 Save Changes", class: 'btn btn-primary' %>
+        <%= link_to "Cancel", todos_path, class: 'btn secondary' %>
+      </div>
+    <% end %>
+  </div>
+</div>

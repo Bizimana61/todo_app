@@ -1,27 +1,23 @@
 class TodosController < ApplicationController
+  before_action :require_login
   before_action :set_todo, only: %i[ show edit update destroy ]
 
-  # GET /todos or /todos.json
   def index
-    @todos = Todo.all
+    @todos = current_user.todos.order(created_at: :desc)
   end
 
-  # GET /todos/1 or /todos/1.json
   def show
   end
 
-  # GET /todos/new
   def new
-    @todo = Todo.new
+    @todo = current_user.todos.new(done: false)
   end
 
-  # GET /todos/1/edit
   def edit
   end
 
-  # POST /todos or /todos.json
   def create
-    @todo = Todo.new(todo_params)
+    @todo = current_user.todos.new(todo_params)
 
     respond_to do |format|
       if @todo.save
@@ -34,10 +30,15 @@ class TodosController < ApplicationController
     end
   end
 
-  # PATCH/PUT /todos/1 or /todos/1.json
   def update
     respond_to do |format|
       if @todo.update(todo_params)
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace(helpers.dom_id(@todo),
+                                                   partial: "todos/todo",
+                                                   locals: { todo: @todo })
+        end
+
         format.html { redirect_to @todo, notice: "Todo was successfully updated.", status: :see_other }
         format.json { render :show, status: :ok, location: @todo }
       else
@@ -47,7 +48,6 @@ class TodosController < ApplicationController
     end
   end
 
-  # DELETE /todos/1 or /todos/1.json
   def destroy
     @todo.destroy!
 
@@ -58,20 +58,12 @@ class TodosController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_todo
-      @todo = Todo.find(params.expect(:id))
-    end
 
-    # Only allow a list of trusted parameters through.
-    def todo_params
-      params.require(:todo).permit(:description, :due_date, :done)
-    end
+  def set_todo
+    @todo = current_user.todos.find(params[:id])
+  end
 
-    def hello
-      respond_to do |format|
-        format.html { render :hello }
-        format.json { render json: "hello world!" }
-      end
-    end
+  def todo_params
+    params.require(:todo).permit(:description, :due_date, :done)
+  end
 end

@@ -1,0 +1,50 @@
+<% content_for :title, "Welcome to TaskFlow" %>
+
+<div class="hero-landing">
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-icon">✨</div>
+      <h1 class="hero-title">Welcome to TaskFlow</h1>
+      <p class="hero-subtitle">Your intelligent companion for staying organized and productive</p>
+      
+      <div class="features">
+        <div class="feature">
+          <span class="feature-icon">📝</span>
+          <h3>Smart Lists</h3>
+          <p>Organize your tasks with ease</p>
+        </div>
+        <div class="feature">
+          <span class="feature-icon">⏰</span>
+          <h3>Due Dates</h3>
+          <p>Never miss a deadline</p>
+        </div>
+        <div class="feature">
+          <span class="feature-icon">✅</span>
+          <h3>Track Progress</h3>
+          <p>Mark tasks complete as you go</p>
+        </div>
+      </div>
+
+      <div class="cta-buttons">
+        <%= link_to 'Get Started — Sign Up', signup_path, class: 'btn btn-primary btn-large' %>
+        <%= link_to 'Already have an account? Log In', login_path, class: 'btn btn-secondary btn-large' %>
+      </div>
+    </div>
+
+    <div class="hero-image">
+      <div class="floating-card card-1">
+        <span class="card-icon">📋</span>
+        <span class="card-text">Buy groceries</span>
+        <span class="card-check">✓</span>
+      </div>
+      <div class="floating-card card-2">
+        <span class="card-icon">💼</span>
+        <span class="card-text">Finish project</span>
+      </div>
+      <div class="floating-card card-3">
+        <span class="card-icon">🏋️</span>
+        <span class="card-text">Go to gym</span>
+      </div>
+    </div>
+  </div>
+</div>
