@@ -1,12 +1,21 @@
-<% content_for :title, "Editing todo" %>
+<% content_for :title, "Edit Todo - TaskManager" %>
 
-<h1>Editing todo</h1>
+<div class="card" style="max-width: 700px; margin: 0 auto;">
+  <div class="card-header">
+    <h1 style="margin: 0; display: flex; align-items: center; gap: 0.75rem; font-weight: 700;">
+      <span style="font-size: 2rem;">✏️</span>
+      Edit Todo
+    </h1>
+  </div>
 
-<%= render "form", todo: @todo %>
+  <%= render "form", todo: @todo %>
 
-<br>
-
-<div>
-  <%= link_to "Show this todo", @todo %> |
-  <%= link_to "Back to todos", todos_path %>
+  <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--color-border); display: flex; gap: 1rem; flex-wrap: wrap;">
+    <%= link_to @todo, class: 'btn btn-ghost' do %>
+      👁️ View Todo
+    <% end %>
+    <%= link_to todos_path, class: 'btn btn-ghost' do %>
+      ← Back to Todos
+    <% end %>
+  </div>
 </div>

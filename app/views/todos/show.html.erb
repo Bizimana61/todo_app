@@ -1,10 +1,84 @@
-<p style="color: green"><%= notice %></p>
+<% content_for :title, "Todo Details - TaskManager" %>
 
-<%= render @todo %>
+<div class="card" style="max-width: 800px; margin: 0 auto;">
+  <div class="card-header" style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;">
+    <div>
+      <h1 style="margin: 0 0 0.5rem 0; font-size: 2rem; font-weight: 700; color: var(--color-text);">
+        <%= @todo.description.presence || 'Untitled Todo' %>
+      </h1>
+      <% if @todo.done %>
+        <span style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: var(--color-success-light); color: var(--color-success-dark); border: 2px solid var(--color-success); border-radius: var(--radius-full); font-weight: 700; font-size: 0.875rem;">
+          ✓ Completed
+        </span>
+      <% else %>
+        <span style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: var(--color-warning-light); color: var(--color-warning-dark); border: 2px solid var(--color-warning); border-radius: var(--radius-full); font-weight: 700; font-size: 0.875rem;">
+          ⏳ In Progress
+        </span>
+      <% end %>
+    </div>
+    
+    <%= link_to edit_todo_path(@todo), class: 'btn btn-warning' do %>
+      ✏️ Edit
+    <% end %>
+  </div>
 
-<div>
-  <%= link_to "Edit this todo", edit_todo_path(@todo) %> |
-  <%= link_to "Back to todos", todos_path %>
+  <div style="padding: 2rem 0;">
+    <% if @todo.due_date.present? %>
+      <div style="display: flex; align-items: center; gap: 1rem; padding: 1.5rem; background: var(--color-bg-alt); border-radius: var(--radius-md); margin-bottom: 1.5rem;">
+        <span style="font-size: 2rem;">📅</span>
+        <div>
+          <div style="font-weight: 600; color: var(--color-text); margin-bottom: 0.25rem;">Due Date</div>
+          <div style="font-size: 1.125rem; color: var(--color-text-muted);">
+            <%= @todo.due_date.respond_to?(:strftime) ? @todo.due_date.strftime("%B %e, %Y at %l:%M %p") : @todo.due_date.to_s %>
+          </div>
+          <% if !@todo.done && urgency_message(@todo) %>
+            <div style="margin-top: 0.5rem;">
+              <span class="urgency-badge <%= urgency_class(@todo) %>">
+                <%= urgency_message(@todo) %>
+              </span>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% else %>
+      <div style="padding: 1.5rem; background: var(--color-bg-alt); border-radius: var(--radius-md); margin-bottom: 1.5rem; text-align: center; color: var(--color-text-muted);">
+        No due date set
+      </div>
+    <% end %>
 
-  <%= button_to "Destroy this todo", @todo, method: :delete %>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+      <div style="padding: 1.5rem; background: var(--color-bg-alt); border-radius: var(--radius-md);">
+        <div style="font-weight: 600; color: var(--color-text-muted); margin-bottom: 0.5rem; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">Created</div>
+        <div style="color: var(--color-text);">
+          <%= @todo.created_at.strftime("%b %e, %Y") %>
+        </div>
+      </div>
+      
+      <div style="padding: 1.5rem; background: var(--color-bg-alt); border-radius: var(--radius-md);">
+        <div style="font-weight: 600; color: var(--color-text-muted); margin-bottom: 0.5rem; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">Last Updated</div>
+        <div style="color: var(--color-text);">
+          <%= @todo.updated_at.strftime("%b %e, %Y") %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-actions" style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: space-between;">
+    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+      <%= link_to todos_path, class: 'btn btn-ghost' do %>
+        ← Back to Todos
+      <% end %>
+      
+      <%= link_to edit_todo_path(@todo), class: 'btn btn-secondary' do %>
+        ✏️ Edit Todo
+      <% end %>
+    </div>
+    
+    <%= button_to @todo, 
+        method: :delete, 
+        class: 'btn btn-danger',
+        form: { data: { turbo_confirm: 'Are you sure you want to delete this todo? This action cannot be undone.' } } do %>
+      🗑️ Delete Todo
+    <% end %>
+  </div>
 </div>

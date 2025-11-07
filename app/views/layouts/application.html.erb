@@ -73,10 +73,10 @@
               <% end %>
             <% end %>
             <span class="muted" style="margin-right:.5rem;"><%= current_user.name.presence || current_user.email %></span>
-            <%= button_to 'Log out', logout_path, method: :delete, class: 'btn', form: { data: { turbo: false } } %>
+            <%= button_to 'Log out', logout_path, method: :delete, class: 'btn btn-sm', form: { data: { turbo: false } } %>
           <% else %>
-            <%= link_to 'Log in', login_path, class: 'btn secondary', style: 'margin-right:.5rem;' %>
-            <%= link_to 'Sign up', signup_path, class: 'btn' %>
+            <%= link_to 'Log in', login_path, class: 'btn btn-secondary btn-sm', style: 'margin-right:.5rem;' %>
+            <%= link_to 'Sign up', signup_path, class: 'btn btn-primary btn-sm' %>
           <% end %>
         </nav>
       </div>

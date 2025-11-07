@@ -1,23 +1,32 @@
-<% content_for :title, "Todos" %>
+<% content_for :title, "Your Todos - TaskManager" %>
 
-<div class="hero" role="region" aria-labelledby="hero-heading">
-  <div class="container">
-    <h2 id="hero-heading">Welcome to TaskFlow</h2>
-    <p>Do you want some help organizing your todo list today? Click the button below to get started with a few helpful tips.</p>
-    <p>
-      <a class="btn" href="#organize-help">Yes — help me organize</a>
-      <%= link_to 'Create new todo', new_todo_path, class: 'btn secondary' %>
-    </p>
+<div class="card" style="margin-bottom: 2rem;">
+  <div class="todos-header">
+    <div>
+      <h1 style="margin: 0 0 0.5rem 0; font-size: 2rem; font-weight: 700; color: var(--color-text);">Your Todos</h1>
+      <p style="margin: 0; color: var(--color-text-muted); font-size: 1rem;">
+        Manage your tasks and stay organized
+      </p>
+    </div>
+    <%= link_to new_todo_path, class: 'btn btn-primary', style: 'white-space: nowrap; font-size: 1rem;' do %>
+      <span style="font-size: 1.5rem; line-height: 1; margin-right: 0.25rem;">+</span> New Todo
+    <% end %>
   </div>
+
+  <% if @todos.empty? %>
+    <div style="text-align: center; padding: 4rem 2rem; background: var(--color-bg-alt); border-radius: var(--radius-lg); margin-top: 2rem;">
+      <div style="font-size: 4rem; margin-bottom: 1rem;">📝</div>
+      <h2 style="color: var(--color-text); margin-bottom: 1rem; font-size: 1.5rem; font-weight: 700;">No todos yet</h2>
+      <p style="color: var(--color-text-muted); margin-bottom: 2rem; font-size: 1rem;">
+        Get started by creating your first todo!
+      </p>
+      <%= link_to new_todo_path, class: 'btn btn-primary btn-lg', style: 'font-size: 1.125rem;' do %>
+        <span style="font-size: 1.75rem; line-height: 1; margin-right: 0.25rem;">+</span> Create Your First Todo
+      <% end %>
+    </div>
+  <% else %>
+    <div id="todos" class="todos-list" role="list" style="margin-top: 2rem;">
+      <%= render @todos %>
+    </div>
+  <% end %>
 </div>
-
-<section class="container" aria-labelledby="todos-heading">
-  <h1 id="todos-heading">Your Todos</h1>
-
-  <div id="todos" class="todo-list" role="list">
-    <%= render @todos %>
-  </div>
-
-  <p><%= link_to "New todo", new_todo_path, class: 'btn' %></p>
-</section>
-<%= render 'shared/organize_help' %>

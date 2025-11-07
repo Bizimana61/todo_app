@@ -1,8 +1,10 @@
 <%= form_with(model: todo) do |form| %>
   <% if todo.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(todo.errors.count, "error") %> prohibited this todo from being saved:</h2>
-      <ul>
+    <div class="form-error" style="margin-bottom: 2rem; padding: 1rem; background: var(--color-danger-light); border-left: 4px solid var(--color-danger); border-radius: var(--radius-md);">
+      <h2 style="margin: 0 0 0.75rem 0; color: var(--color-danger-dark); font-size: 1.125rem;">
+        <%= pluralize(todo.errors.count, "error") %> prevented this todo from being saved:
+      </h2>
+      <ul style="margin: 0; padding-left: 1.5rem; color: var(--color-danger-dark);">
         <% todo.errors.each do |error| %>
           <li><%= error.full_message %></li>
         <% end %>
@@ -10,26 +12,41 @@
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :description, style: "display: block" %>
-    <%= form.text_field :description, required: true, aria: { describedby: "description-help" } %>
-    <small id="description-help" class="muted">Brief description of the task</small>
+  <div class="form-group">
+    <%= form.label :description, class: 'form-label form-label-required', style: 'font-weight: 600;' do %>
+      Description
+    <% end %>
+    <%= form.text_area :description, 
+        required: true, 
+        rows: 3,
+        class: 'form-input',
+        placeholder: 'What do you need to do?',
+        aria: { describedby: "description-help" } %>
+    <small id="description-help" class="form-help">
+      Enter a clear description of your task
+    </small>
   </div>
 
-  <div style="margin-top:0.5rem;">
-    <%= form.label :due_date, "Due date (optional)", style: "display:block" %>
+  <div class="form-group">
+    <%= form.label :due_date, "Due Date", class: 'form-label', style: "display:block; font-weight: 600;" %>
     <%= form.datetime_local_field :due_date,
           value: (todo.due_date.present? ? todo.due_date.strftime("%Y-%m-%dT%H:%M") : nil),
+          class: 'form-input',
           aria: { describedby: "due-date-help" } %>
-    <small id="due-date-help" class="muted">Pick a date and time (optional). If no picker appears, enter YYYY-MM-DD HH:MM.</small>
+    <small id="due-date-help" class="form-help">
+      Optional: Set a deadline for this task
+    </small>
   </div>
 
-  <div style="margin-top:0.5rem;">
-    <%= form.label :done %>
-    <%= form.check_box :done %>
+  <div class="form-group">
+    <label class="form-check">
+      <%= form.check_box :done, class: 'form-check-input' %>
+      <span class="form-check-label" style="font-weight: 600;">Mark as completed</span>
+    </label>
   </div>
 
-  <div style="margin-top:1rem;">
-    <%= form.submit %>
+  <div class="form-actions">
+    <%= form.submit class: 'btn btn-primary btn-lg' %>
+    <%= link_to 'Cancel', todos_path, class: 'btn btn-ghost' %>
   </div>
 <% end %>
