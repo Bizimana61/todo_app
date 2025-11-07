@@ -2,6 +2,10 @@
 
 one:
   description: MyString
+  user: one
+  done: false
 
 two:
   description: MyString
+  user: two
+  done: false

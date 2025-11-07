@@ -2,7 +2,10 @@ require "test_helper"
 
 class TodosControllerTest < ActionDispatch::IntegrationTest
   setup do
+    @user = users(:one)
     @todo = todos(:one)
+    # Log in the user by setting session
+    post login_url, params: { email: @user.email, password: 'Password123!' }
   end
 
   test "should get index" do
@@ -17,7 +20,7 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
 
   test "should create todo" do
     assert_difference("Todo.count") do
-      post todos_url, params: { todo: { description: @todo.description } }
+      post todos_url, params: { todo: { description: "New test todo", done: false } }
     end
 
     assert_redirected_to todo_url(Todo.last)
@@ -34,7 +37,7 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update todo" do
-    patch todo_url(@todo), params: { todo: { description: @todo.description } }
+    patch todo_url(@todo), params: { todo: { description: "Updated description", done: true } }
     assert_redirected_to todo_url(@todo)
   end
 
@@ -44,5 +47,12 @@ class TodosControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to todos_url
+  end
+
+  test "should not access other user's todos" do
+    other_user_todo = todos(:two)
+    get todo_url(other_user_todo)
+    assert_redirected_to todos_url
+    assert_equal "Todo not found or you don't have permission to access it.", flash[:alert]
   end
 end

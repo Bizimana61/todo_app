@@ -504,7 +504,7 @@ For detailed security documentation, see [SECURITY.md](SECURITY.md)
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/todo_app.git
+   git clone https://github.com/Bizimana61/todo_app.git
    cd todo_app
    ```
 
