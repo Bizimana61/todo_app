@@ -68,16 +68,30 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :smtp
 
   if ENV["SENDGRID_USERNAME"].present?
-    # SendGrid configuration
-    config.action_mailer.smtp_settings = {
-      address: "smtp.sendgrid.net",
-      port: 587,
-      domain: "heroku.com",
-      user_name: ENV["SENDGRID_USERNAME"],
-      password: ENV["SENDGRID_PASSWORD"],
-      authentication: :plain,
-      enable_starttls_auto: true
-    }
+    # Check if it's Gmail or SendGrid
+    if ENV["SENDGRID_USERNAME"].include?("@gmail.com")
+      # Gmail configuration (for testing only)
+      config.action_mailer.smtp_settings = {
+        address: "smtp.gmail.com",
+        port: 587,
+        domain: "gmail.com",
+        user_name: ENV["SENDGRID_USERNAME"],
+        password: ENV["SENDGRID_PASSWORD"],
+        authentication: :plain,
+        enable_starttls_auto: true
+      }
+    else
+      # SendGrid configuration
+      config.action_mailer.smtp_settings = {
+        address: "smtp.sendgrid.net",
+        port: 587,
+        domain: "heroku.com",
+        user_name: ENV["SENDGRID_USERNAME"],
+        password: ENV["SENDGRID_PASSWORD"],
+        authentication: :plain,
+        enable_starttls_auto: true
+      }
+    end
   elsif ENV["MAILGUN_SMTP_LOGIN"].present?
     # Mailgun configuration
     config.action_mailer.smtp_settings = {

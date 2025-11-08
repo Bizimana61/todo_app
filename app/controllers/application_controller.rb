@@ -19,13 +19,24 @@ class ApplicationController < ActionController::Base
     if session[:user_id]
       user = User.find_by(id: session[:user_id])
       
-      # Validate session token to ensure session is still valid
-      if user && session[:session_token] == user.session_token
-        @current_user = user
-      else
-        # Session token mismatch - password was changed on another device
-        reset_session
-        @current_user = nil
+      if user
+        # If user doesn't have a session token yet, generate one (for existing users)
+        if user.session_token.nil?
+          user.update_column(:session_token, SecureRandom.urlsafe_base64(32))
+          session[:session_token] = user.session_token
+          @current_user = user
+        # If session doesn't have a token, add it (for backward compatibility)
+        elsif session[:session_token].nil?
+          session[:session_token] = user.session_token
+          @current_user = user
+        # Validate session token matches
+        elsif session[:session_token] == user.session_token
+          @current_user = user
+        else
+          # Session token mismatch - password was changed on another device
+          reset_session
+          @current_user = nil
+        end
       end
     end
     
