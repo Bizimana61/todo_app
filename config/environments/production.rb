@@ -54,41 +54,44 @@ Rails.application.configure do
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
-  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.raise_delivery_errors = false
   config.action_mailer.perform_deliveries = true
 
   # Set host to be used by links generated in mailer templates.
   # Update this with your actual Heroku app URL
-  config.action_mailer.default_url_options = { 
+  config.action_mailer.default_url_options = {
     host: ENV.fetch("APP_HOST", "glacial-badlands-72205-fcb39e9c9baf.herokuapp.com"),
-    protocol: 'https'
+    protocol: "https"
   }
 
   # Email delivery configuration (supports both SendGrid and Mailgun)
   config.action_mailer.delivery_method = :smtp
-  
-  if ENV['SENDGRID_USERNAME'].present?
+
+  if ENV["SENDGRID_USERNAME"].present?
     # SendGrid configuration
     config.action_mailer.smtp_settings = {
-      address: 'smtp.sendgrid.net',
+      address: "smtp.sendgrid.net",
       port: 587,
-      domain: 'heroku.com',
-      user_name: ENV['SENDGRID_USERNAME'],
-      password: ENV['SENDGRID_PASSWORD'],
+      domain: "heroku.com",
+      user_name: ENV["SENDGRID_USERNAME"],
+      password: ENV["SENDGRID_PASSWORD"],
       authentication: :plain,
       enable_starttls_auto: true
     }
-  elsif ENV['MAILGUN_SMTP_LOGIN'].present?
+  elsif ENV["MAILGUN_SMTP_LOGIN"].present?
     # Mailgun configuration
     config.action_mailer.smtp_settings = {
-      address: 'smtp.mailgun.org',
+      address: "smtp.mailgun.org",
       port: 587,
-      domain: ENV['MAILGUN_DOMAIN'],
-      user_name: ENV['MAILGUN_SMTP_LOGIN'],
-      password: ENV['MAILGUN_SMTP_PASSWORD'],
+      domain: ENV["MAILGUN_DOMAIN"],
+      user_name: ENV["MAILGUN_SMTP_LOGIN"],
+      password: ENV["MAILGUN_SMTP_PASSWORD"],
       authentication: :plain,
       enable_starttls_auto: true
     }
+  else
+    # Fallback: Don't send emails if no service is configured
+    config.action_mailer.perform_deliveries = false
   end
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to

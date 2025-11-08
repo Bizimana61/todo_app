@@ -12,14 +12,21 @@ class PasswordResetsController < ApplicationController
       @user.create_reset_digest
       
       # Send password reset email
-      UserMailer.password_reset(@user).deliver_now
+      begin
+        UserMailer.password_reset(@user).deliver_now
+        message = "Password reset instructions sent to your email"
+      rescue => e
+        # Log error but don't crash
+        Rails.logger.error "Failed to send password reset email: #{e.message}"
+        message = "Password reset link created (email service not configured)"
+      end
       
       # In development, also show the link in the flash for testing
       if Rails.env.development?
         reset_url = edit_password_reset_url(@user.reset_token, email: @user.email)
-        redirect_to root_path, notice: "Password reset email sent! (DEV: #{reset_url})"
+        redirect_to root_path, notice: "#{message} (DEV: #{reset_url})"
       else
-        redirect_to root_path, notice: "Password reset instructions sent to your email"
+        redirect_to root_path, notice: message
       end
     else
       flash.now[:alert] = "Email address not found"

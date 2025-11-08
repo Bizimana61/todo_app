@@ -8,7 +8,7 @@ class TodosTest < ApplicationSystemTestCase
     # Log in before each test
     visit login_url
     fill_in "Email", with: @user.email
-    fill_in "Password", with: "J1r2m3e4@"
+    fill_in "Password", with: "Password123!"
     click_button "Log in"
 
     # Wait for redirect to todos page after login
