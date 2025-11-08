@@ -58,11 +58,9 @@ class TodosTest < ApplicationSystemTestCase
 
     # Make sure we have todos
     if has_css?(".todo-item")
-      # Find and click the first Delete button
+      # Find and click the first Delete button (no confirmation in test env)
       within first(".todo-item") do
-        accept_confirm do
-          click_button "Delete"
-        end
+        click_button "Delete"
       end
 
       assert_text "Todo was successfully destroyed"

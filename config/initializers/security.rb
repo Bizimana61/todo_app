@@ -6,9 +6,9 @@ Rails.application.configure do
   if Rails.env.production?
     config.session_store :cookie_store,
                          key: "_taskmanager_session",
-                         secure: true,           # Only send cookie over HTTPS
-                         httponly: true,         # Prevent JavaScript access to session cookie
-                         same_site: :lax         # CSRF protection
+                         secure: true, # Only send cookie over HTTPS
+                         httponly: true, # Prevent JavaScript access to session cookie
+                         same_site: :lax # CSRF protection
   end
 
   # Prevent host header injection

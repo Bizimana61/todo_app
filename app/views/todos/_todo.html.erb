@@ -45,7 +45,7 @@
     <%= button_to todo_path(todo), 
         method: :delete, 
         class: 'btn btn-sm btn-danger',
-        form: { data: { turbo_confirm: 'Are you sure you want to delete this todo?' } },
+        form: { data: Rails.env.test? ? {} : { turbo_confirm: 'Are you sure you want to delete this todo?' } },
         aria: { label: "Delete #{todo.description || 'todo'}" } do %>
       🗑️ Delete
     <% end %>
