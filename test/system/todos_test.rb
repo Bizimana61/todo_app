@@ -9,7 +9,7 @@ class TodosTest < ApplicationSystemTestCase
     visit login_url
     fill_in "Email", with: @user.email
     fill_in "Password", with: "Password123!"
-    click_on "Log in"
+    click_on "Log in", match: :first  # Click the first "Log in" button (the form submit)
   end
 
   test "visiting the index" do
@@ -19,20 +19,20 @@ class TodosTest < ApplicationSystemTestCase
 
   test "should create todo" do
     visit todos_url
-    click_on "Add New Todo"
+    click_on "New Todo"  # Updated to match your new button text
 
     fill_in "Description", with: "Test todo description"
-    click_on "Create Todo"
+    click_button "Create Todo"  # Use click_button instead of click_on for submit buttons
 
     assert_text "Todo was successfully created"
   end
 
   test "should update Todo" do
     visit todos_url
-    click_on "Edit", match: :first
+    click_link "Edit", match: :first  # Use click_link for link buttons with icons
 
     fill_in "Description", with: "Updated description"
-    click_on "Update Todo"
+    click_button "Update Todo"  # Use click_button for submit
 
     assert_text "Todo was successfully updated"
   end
@@ -41,7 +41,7 @@ class TodosTest < ApplicationSystemTestCase
     visit todos_url
 
     accept_confirm do
-      click_on "Destroy", match: :first
+      click_button "Delete", match: :first  # Use click_button for button_to with icon
     end
 
     assert_text "Todo was successfully destroyed"
