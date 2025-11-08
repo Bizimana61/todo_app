@@ -1,26 +1,27 @@
 class SessionsController < ApplicationController
   # Rate limiting: max 5 login attempts per IP per minute
-  before_action :check_rate_limit, only: [ :create ]
-
+  before_action :check_rate_limit, only: [:create]
+  
   def new
   end
 
   def create
     user = User.find_by("lower(email) = ?", params[:email].to_s.downcase.strip)
-
+    
     if user&.authenticate(params[:password])
       # Reset login attempts on successful login
       reset_rate_limit
-
+      
       # Regenerate session ID to prevent session fixation attacks
       reset_session
       session[:user_id] = user.id
-
+      session[:session_token] = user.session_token
+      
       redirect_to todos_path, notice: "Welcome back, #{user.name || user.email}!"
     else
       # Increment failed login attempts
       increment_rate_limit
-
+      
       # Use generic error message to prevent user enumeration
       flash.now[:alert] = "Invalid email or password."
       render :new, status: :unprocessable_entity

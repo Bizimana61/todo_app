@@ -15,7 +15,21 @@ class ApplicationController < ActionController::Base
 
   def current_user
     return @current_user if defined?(@current_user)
-    @current_user = User.find_by(id: session[:user_id]) if session[:user_id]
+    
+    if session[:user_id]
+      user = User.find_by(id: session[:user_id])
+      
+      # Validate session token to ensure session is still valid
+      if user && session[:session_token] == user.session_token
+        @current_user = user
+      else
+        # Session token mismatch - password was changed on another device
+        reset_session
+        @current_user = nil
+      end
+    end
+    
+    @current_user
   end
 
   def logged_in?
@@ -30,18 +44,18 @@ class ApplicationController < ActionController::Base
 
   def set_security_headers
     # Prevent clickjacking attacks
-    response.headers["X-Frame-Options"] = "DENY"
-
+    response.headers['X-Frame-Options'] = 'DENY'
+    
     # Prevent MIME type sniffing
-    response.headers["X-Content-Type-Options"] = "nosniff"
-
+    response.headers['X-Content-Type-Options'] = 'nosniff'
+    
     # Enable XSS protection (legacy browsers)
-    response.headers["X-XSS-Protection"] = "1; mode=block"
-
+    response.headers['X-XSS-Protection'] = '1; mode=block'
+    
     # Enforce HTTPS in production
-    response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains" if Rails.env.production?
-
+    response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains' if Rails.env.production?
+    
     # Prevent information disclosure
-    response.headers["X-Powered-By"] = "TaskManager"
+    response.headers['X-Powered-By'] = 'TaskManager'
   end
 end

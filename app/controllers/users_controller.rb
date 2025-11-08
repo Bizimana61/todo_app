@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-  before_action :require_login, only: [ :edit, :update ]
-  before_action :set_user, only: [ :edit, :update ]
+  before_action :require_login, only: [:edit, :update]
+  before_action :set_user, only: [:edit, :update]
 
   def new
     @user = User.new
@@ -12,6 +12,7 @@ class UsersController < ApplicationController
       # Regenerate session to prevent session fixation
       reset_session
       session[:user_id] = @user.id
+      session[:session_token] = @user.session_token
       redirect_to todos_path, notice: "Welcome to TaskManager, #{@user.name || @user.email}! Start adding your todos below."
     else
       render :new, status: :unprocessable_entity
@@ -22,6 +23,9 @@ class UsersController < ApplicationController
   end
 
   def update
+    # Check if password is being changed
+    password_changing = params[:user][:password].present?
+    
     # Only allow password update if current password is confirmed
     if params[:user][:password].blank?
       params[:user].delete(:password)
@@ -39,7 +43,14 @@ class UsersController < ApplicationController
     end
 
     if @user.update(user_params)
-      redirect_to todos_path, notice: "Profile updated successfully."
+      # If password was changed, regenerate session token to log out other devices
+      if password_changing
+        @user.regenerate_session_token
+        session[:session_token] = @user.session_token
+        redirect_to todos_path, notice: "Profile updated successfully. All other devices have been logged out for security."
+      else
+        redirect_to todos_path, notice: "Profile updated successfully."
+      end
     else
       render :edit, status: :unprocessable_entity
     end

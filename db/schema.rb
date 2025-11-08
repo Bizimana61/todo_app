@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_07_064000) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_08_000000) do
   create_table "todos", force: :cascade do |t|
     t.string "description"
     t.datetime "created_at", null: false
@@ -30,8 +30,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_07_064000) do
     t.string "avatar_url"
     t.string "reset_digest"
     t.datetime "reset_sent_at"
+    t.string "session_token"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_digest"], name: "index_users_on_reset_digest"
+    t.index ["session_token"], name: "index_users_on_session_token", unique: true
   end
 
   add_foreign_key "todos", "users"
