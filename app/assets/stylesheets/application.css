@@ -1359,3 +1359,93 @@ main {
     padding: var(--space-4);
   }
 }
+
+/* ============================================
+   PWA-Specific Styles
+   ============================================ */
+
+/* Safe area insets for iOS notch and Android system bars */
+@supports (padding: max(0px)) {
+  body {
+    padding-top: max(0px, env(safe-area-inset-top));
+    padding-bottom: max(0px, env(safe-area-inset-bottom));
+    padding-left: max(0px, env(safe-area-inset-left));
+    padding-right: max(0px, env(safe-area-inset-right));
+  }
+}
+
+/* PWA mode - hide elements that don't make sense in standalone */
+.pwa-mode .browser-only {
+  display: none;
+}
+
+/* Install button (optional) */
+#install-button {
+  display: none;
+  position: fixed;
+  bottom: var(--space-4);
+  right: var(--space-4);
+  padding: var(--space-3) var(--space-5);
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-lg);
+  font-weight: 700;
+  font-size: 0.875rem;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+  z-index: 1000;
+  transition: all 0.2s ease;
+}
+
+#install-button:hover {
+  background: var(--color-primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
+}
+
+#install-button:active {
+  transform: translateY(0);
+}
+
+/* iOS standalone mode adjustments */
+@media (display-mode: standalone) {
+  /* Extra padding for iOS status bar */
+  .site-header {
+    padding-top: max(var(--space-4), env(safe-area-inset-top));
+  }
+  
+  /* Adjust footer for iOS home indicator */
+  .site-footer {
+    padding-bottom: max(var(--space-4), env(safe-area-inset-bottom));
+  }
+}
+
+/* Android standalone mode */
+@media (display-mode: standalone) and (prefers-color-scheme: dark) {
+  /* Optional: Add dark mode support for PWA */
+  :root {
+    --color-bg: #111827;
+    --color-text: #f9fafb;
+  }
+}
+
+/* Prevent text selection on buttons in PWA mode */
+.pwa-mode button,
+.pwa-mode .btn {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Better touch targets for mobile */
+@media (pointer: coarse) {
+  .btn,
+  button,
+  a.btn,
+  input[type="submit"],
+  input[type="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}

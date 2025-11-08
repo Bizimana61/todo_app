@@ -1,0 +1,36 @@
+<% content_for :title, "Forgot Password - TaskManager" %>
+
+<div class="card" style="max-width: 500px; margin: 2rem auto;">
+  <div class="card-header">
+    <h1 style="margin: 0; font-weight: 700;">Forgot Your Password?</h1>
+    <p style="margin: 0.5rem 0 0 0; color: var(--color-text-muted);">
+      Enter your email address and we'll send you instructions to reset your password.
+    </p>
+  </div>
+
+  <%= form_with url: password_resets_path, method: :post do |f| %>
+    <div class="form-group">
+      <%= label_tag :email, "Email Address", class: 'form-label', style: 'font-weight: 600;' %>
+      <%= email_field_tag :email, params[:email], 
+          class: 'form-input',
+          placeholder: 'your.email@example.com',
+          required: true,
+          autocomplete: 'email',
+          aria: { describedby: 'email-help' } %>
+      <small id="email-help" class="form-help">
+        We'll send password reset instructions to this email
+      </small>
+    </div>
+
+    <div class="form-actions">
+      <%= submit_tag "Send Reset Instructions", class: 'btn btn-primary btn-lg' %>
+      <%= link_to 'Cancel', login_path, class: 'btn btn-ghost' %>
+    </div>
+  <% end %>
+
+  <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--color-border); text-align: center;">
+    <p style="color: var(--color-text-muted); margin: 0;">
+      Remember your password? <%= link_to "Log in", login_path, style: 'color: var(--color-primary); font-weight: 600;' %>
+    </p>
+  </div>
+</div>

@@ -28,7 +28,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_07_064000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "avatar_url"
+    t.string "reset_digest"
+    t.datetime "reset_sent_at"
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_digest"], name: "index_users_on_reset_digest"
   end
 
   add_foreign_key "todos", "users"

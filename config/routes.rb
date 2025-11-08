@@ -1,19 +1,25 @@
 Rails.application.routes.draw do
   resources :todos
-
+  
   get "up" => "rails/health#show", as: :rails_health_check
 
-  get "hello", to: "todos#hello"
-  get "new_todo", to: "todos#new"
+  get 'hello', to: 'todos#hello'
+  get 'new_todo', to: 'todos#new'
+  
+  root 'pages#home'
 
-  root "pages#home"
+  resources :users, only: [:new, :create, :edit, :update]
+  get 'signup', to: 'users#new', as: :signup
+  get 'profile', to: 'users#edit', as: :profile
+  patch 'profile', to: 'users#update'
 
-  resources :users, only: [ :new, :create, :edit, :update ]
-  get "signup", to: "users#new", as: :signup
-  get "profile", to: "users#edit", as: :profile
-  patch "profile", to: "users#update"
+  get  'login',  to: 'sessions#new',     as: :login
+  post 'login',  to: 'sessions#create'
+  delete 'logout', to: 'sessions#destroy', as: :logout
 
-  get  "login",  to: "sessions#new",     as: :login
-  post "login",  to: "sessions#create"
-  delete "logout", to: "sessions#destroy", as: :logout
+  resources :password_resets, only: [:new, :create, :edit, :update]
+
+  # PWA routes
+  get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
+  get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 end

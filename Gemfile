@@ -65,3 +65,5 @@ end
 group :production do
   gem "pg", "~> 1.5", group: :production
 end
+
+gem "letter_opener", "~> 1.10", :group => :development

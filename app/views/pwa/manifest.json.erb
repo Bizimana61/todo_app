@@ -1,22 +1,60 @@
 {
-  "name": "TodoApp",
+  "name": "TaskManager - Organize Your Tasks",
+  "short_name": "TaskManager",
+  "description": "A powerful task management app to help you stay organized and productive",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "scope": "/",
+  "theme_color": "#2563eb",
+  "background_color": "#ffffff",
   "icons": [
     {
-      "src": "/icon.png",
-      "type": "image/png",
-      "sizes": "512x512"
+      "src": "/icon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any"
     },
     {
-      "src": "/icon.png",
+      "src": "/icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icon-512.png",
       "type": "image/png",
       "sizes": "512x512",
       "purpose": "maskable"
     }
   ],
-  "start_url": "/",
-  "display": "standalone",
-  "scope": "/",
-  "description": "TodoApp.",
-  "theme_color": "red",
-  "background_color": "red"
+  "categories": ["productivity", "utilities"],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "New Todo",
+      "short_name": "New",
+      "description": "Create a new todo",
+      "url": "/todos/new",
+      "icons": []
+    },
+    {
+      "name": "All Todos",
+      "short_name": "Todos",
+      "description": "View all todos",
+      "url": "/todos",
+      "icons": []
+    }
+  ]
 }

@@ -3,23 +3,41 @@
   <head>
     <title><%= content_for(:title) || "TaskManager" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="application-name" content="TaskManager">
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="TaskManager">
     <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
     <%= yield :head %>
 
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+    <!-- PWA Manifest -->
+    <%= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
 
     <!-- Favicons and App Icons with cache busting -->
     <link rel="icon" href="/icon.svg?v=2" type="image/svg+xml">
     <link rel="shortcut icon" href="/icon.svg?v=2" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/icon.svg?v=2">
+    
+    <!-- iOS Specific Icons -->
+    <link rel="apple-touch-icon" href="/icon-192.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/icon-192.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/icon-192.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/icon-192.png">
+    
+    <!-- Android Chrome -->
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png">
     
     <!-- Theme color for mobile browsers -->
     <meta name="theme-color" content="#2563eb">
+    <meta name="msapplication-TileColor" content="#2563eb">
+    <meta name="msapplication-TileImage" content="/icon-192.png">
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
