@@ -46,6 +46,9 @@ class TodosTest < ApplicationSystemTestCase
         click_link "Edit"
       end
 
+      # Wait for edit page to load
+      assert_selector "h1", text: "Edit Todo"
+
       # Fill in with new content (Capybara will clear and replace)
       fill_in "Description", with: "Updated description for my todo"
       click_button "Update Todo"
