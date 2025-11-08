@@ -39,25 +39,18 @@ class TodosTest < ApplicationSystemTestCase
   test "should update Todo" do
     visit todos_url
 
-    # Make sure we have todos and can see the Edit button
-    if has_css?(".todo-item")
-      # Find and click the first Edit link
-      within first(".todo-item") do
-        click_link "Edit"
-      end
+    # Find and click Edit on the first todo
+    click_link "Edit", match: :first
 
-      # Wait for edit page to load
-      assert_selector "h1", text: "Edit Todo"
+    # Wait for edit page
+    assert_selector "h1", text: "Edit Todo"
 
-      # Fill in with new content (Capybara will clear and replace)
-      fill_in "Description", with: "Updated description for my todo"
-      click_button "Update Todo"
+    # Update the description
+    fill_in "Description", with: "Updated test description"
+    click_button "Update Todo"
 
-      # Should redirect to show page after successful update
-      assert_text "Updated description for my todo"
-    else
-      skip "No todos available to edit"
-    end
+    # Verify the update succeeded by checking the new text appears
+    assert_text "Updated test description"
   end
 
   test "should destroy Todo" do
