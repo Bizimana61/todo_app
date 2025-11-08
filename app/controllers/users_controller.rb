@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-  before_action :require_login, only: [:edit, :update]
-  before_action :set_user, only: [:edit, :update]
+  before_action :require_login, only: [ :edit, :update ]
+  before_action :set_user, only: [ :edit, :update ]
 
   def new
     @user = User.new
@@ -25,7 +25,7 @@ class UsersController < ApplicationController
   def update
     # Check if password is being changed
     password_changing = params[:user][:password].present?
-    
+
     # Only allow password update if current password is confirmed
     if params[:user][:password].blank?
       params[:user].delete(:password)
