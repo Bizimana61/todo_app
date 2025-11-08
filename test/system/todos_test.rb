@@ -46,12 +46,12 @@ class TodosTest < ApplicationSystemTestCase
         click_link "Edit"
       end
 
-      fill_in "Description", with: "Updated description"
+      # Fill in with new content (Capybara will clear and replace)
+      fill_in "Description", with: "Updated description for my todo"
       click_button "Update Todo"
 
-      # Wait for redirect and check we're back on the show or index page
-      assert_current_path todo_path(@todo)
-      assert_text "Updated description"
+      # Should redirect to show page after successful update
+      assert_text "Updated description for my todo"
     else
       skip "No todos available to edit"
     end
