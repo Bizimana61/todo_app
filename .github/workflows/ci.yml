@@ -103,3 +103,28 @@ jobs:
         env:
           RAILS_ENV: test
         run: bundle exec cucumber
+
+  seed_check:
+    name: Database Seeds
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .ruby-version
+          bundler-cache: true
+
+      - name: Set up database
+        env:
+          RAILS_ENV: development
+        run: |
+          bin/rails db:create
+          bin/rails db:schema:load
+
+      - name: Run seeds
+        env:
+          RAILS_ENV: development
+        run: bin/rails db:seed
